@@ -1,0 +1,22 @@
+<html>
+    <body>
+        Before Processing:<br>
+        <img id="before" src="/unprocessed.png">
+        <br><br>
+        After Processing:<br>
+        <img id="after" src="/Results.jpg">
+    </body>
+
+    <script>
+        function refresh_url1(){
+            document.getElementById("before").src = "/unprocessed.png?=" + new Date().getTime(); 
+        }
+        function refresh_url2(){
+            document.getElementById("after").src = "/Results.jpg?=" + new Date().getTime(); 
+        }
+        setInterval(refresh_url1, 1000)
+        setInterval(refresh_url2, 1000)
+        
+    </script>
+
+</html>

@@ -1,16 +1,29 @@
-# In-Car-Reg-Checker
+# reg-checker
  
-This Reg Checker uses PyTesseract, PiCamera, and the UK Government's VES API - this piece of software is designed exclusively for UK Number plates.
+This uses PyTesseract, PiCamera, and the UK Government's VES API - this piece of software is designed for UK Number plates.
+
+This project can be used to
+- detect commonly spotted vehicles
+- detect vehicles with no MOT
+- detect vehicles with no Tax
+- allow for data analysis of vehicle 'spots'
 
 A demonstration of the Reg Checker in action can be found here - https://youtu.be/OR75He9u3Ac
 
 ## How it works
 
-1. The system will capture an image using PiCamera
-2. The image will be processed to extract a number plate (finding a yellow rectangle)
-3. The image is grayscaled so that it can be read by [PyTesseract](https://pypi.org/project/pytesseract/), an OCR Tool for python
-4. The resultant text is scanned for a valid number plate (as defined by LLNN LLL, where L is letter and N is number).
-5. The system then queries the UK Government VES API for information on this number plate.
+1. Program continously checks video feed to detect number plates.
+2. Number plate is detected.
+3. Number Plate Spotting is added to database of all viewed number plates
+4. Database is searched for occurences of this number plate (designed to detect stalking)
+5. VES API is queried and results are added to Number Plate Spotting.
+
+This data is all viewable in a dashboard.
+There is the option to be emailed with alerts of vehicles spotted with no MOT, no Tax, or who have been spotted an unusual amount of times.
+
+## UML Diagram
+
+
 
 ## Dependencies
 This project uses

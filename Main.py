@@ -8,11 +8,6 @@ import requests
 # Use OCR to detect number plate, then
 # fetch the API to get the tax status.
 
-# Use pytesseract?
-# DM user on discord whenever license plate is scanned,
-# DM user when license plate is not taxed.
-# print(OCR().get_text_from_image("Test.jpg"))
-
 camera = Camera()
 renderer = OCR()
 API = VES(VES_Token)

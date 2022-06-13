@@ -1,9 +1,8 @@
 from VES import VES
-from Camera import Camera
-from Tokens import VES_Token, Webhook
-from OCR import OCR
+import cv2
 import re
-import requests
+import np
+import time
 
 
 class RegRenderer():
@@ -11,8 +10,14 @@ class RegRenderer():
         self.camera = PiCamera()
         self.camera.start_preview()
 
+    def wait_for_plate(self):
+        time.sleep(0.2)
+        return "AA22BBB"
+
     def search_image(self, image_location):
-        pass
+        text = "AA11AAA"
+        num = re.search('[0-9A-Z]{4} [A-Z]{3}', text).group(0)
+        return num
 
     def get_image(self):
         self.camera.capture('Test.jpg')

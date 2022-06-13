@@ -1,32 +1,37 @@
+from ast import Pass
+from xml.dom.minidom import Attr
+import pytesseract
+from pkg_resources import get_importer
 from VES import VES
 import cv2
 import re
-import np
+import numpy as np
 import time
+from PIL import Image, ImageOps
 
 
 class RegRenderer():
     def __init__(self):
-        self.camera = PiCamera()
-        self.camera.start_preview()
+        pass
+        # self.camera = PiCamera()
+        # self.camera.start_preview()
 
     def wait_for_plate(self):
-        time.sleep(0.2)
-        return "AA22BBB"
-
-    def search_image(self, image_location):
-        text = "AA11AAA"
+        text = self.get_text_from_image(
+            self.get_image()
+        )
         num = re.search('[0-9A-Z]{4} [A-Z]{3}', text).group(0)
         return num
 
     def get_image(self):
-        self.camera.capture('Test.jpg')
-        return "Test.jpg"
+        # self.camera.capture('Capture.png')
+        return "Capture.png"
 
-    def get_text_from_image(self, directory):
-        # pytesseract.pytesseract.tesseract_cmd = ("C:\\Program Files\\" +
-        #                                         "Tesseract-OCR\\tesseract.exe"
-        #                                        )
+    def get_text_from_image(self, directory: str):
+        pytesseract.pytesseract.tesseract_cmd = (
+            "C:\\Program Files\\" +
+            "Tesseract-OCR\\tesseract.exe"
+        )
         image = cv2.imread(directory)
         original = image.copy()
         image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)

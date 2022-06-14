@@ -34,28 +34,57 @@ class RegRenderer():
         )
         image = cv2.imread(directory)
         original = image.copy()
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-        lower = np.array([15, 50, 50], dtype="uint8")
-        upper = np.array([30, 255, 255], dtype="uint8")
-        mask = cv2.inRange(image, lower, upper)
-        cnts = cv2.findContours(
-            mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-        cnts = cnts[0] if len(cnts) == 2 else cnts[1]
-        cv2.fillPoly(mask, cnts, (255, 255, 255))
-        result = cv2.bitwise_and(original, original, mask=mask)
+
+        lower = np.array(
+            [20, 20, 20], dtype="uint8"
+        )
+        upper = np.array(
+            [255, 255, 255], dtype="uint8"
+        )
+
+        mask = cv2.inRange(original, lower, upper)
+        result = cv2.bitwise_and(
+            original,
+            original,
+            mask=mask
+        )
+        cv2.imwrite("test.png", result)
         result = cv2.cvtColor(result, cv2.COLOR_BGR2GRAY)
-        thresh, blackAndWhiteImage = cv2.threshold(result, 127, 255,
-                                                   cv2.THRESH_BINARY)
-        cnts = cv2.findContours(blackAndWhiteImage, cv2.RETR_EXTERNAL,
-                                cv2.CHAIN_APPROX_SIMPLE)[-2]
+        thresh, blackAndWhiteImage = cv2.threshold(
+            result, 127, 255,
+            cv2.THRESH_BINARY
+        )
+        cnts = cv2.findContours(
+            blackAndWhiteImage,
+            cv2.RETR_EXTERNAL,
+            cv2.CHAIN_APPROX_SIMPLE
+        )[-2]
+        if len(cnts) == 0:
+            print("123")
+            return ""
         cnt = sorted(cnts, key=cv2.contourArea)[-1]
         x, y, w, h = cv2.boundingRect(cnt)
+
+        cv2.rectangle(
+            original,
+            (x, y),
+            (x + w, y + h),
+            (0, 0, 0),
+            5
+        )
+
+        cv2.imwrite("Inbetween.jpg", original)
+
         dst = blackAndWhiteImage[y:y+h, x:x+w]
         cv2.imwrite("Result.jpg", dst)
-        rendered_text = (pytesseract.image_to_string(
-                        ImageOps.grayscale(Image.open("Result.jpg")),
-                        lang="eng", config="--psm 7"
-            ))
+        rendered_text = (
+            pytesseract.image_to_string(
+                ImageOps.grayscale(
+                    Image.open("Result.jpg")
+                ),
+                lang="eng", config="--psm 7"
+            )
+        )
         rendered_text = rendered_text.replace("\u000C", "")
         rendered_text = rendered_text.replace("\n", "")
         rendered_text = rendered_text.replace("-", "")

@@ -23,6 +23,8 @@ def test_plates():
                 f"Plate '{plate_name}' failed! "
                 f"Should be '{plate_name}' NOT '{read_plate}'"
             )
+        input()
+    print()
     print(
         f"{success}/{len(plate_names)}"
         f" ({success/len(plate_names)*100}%) plates passed!"
